@@ -1,0 +1,15 @@
+server:
+    port: 8100
+
+spring:
+  application:
+    name: messaging.producer
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+local:
+  kafka-topic-name: "livestream-messaging"

@@ -1,0 +1,22 @@
+organization:
+  name: "Kafka Projects - Livestream messaging"
+
+database:
+  host: "postgresql"
+  port: 5432
+  name: "conduktor-console"
+  username: "conduktor"
+  password: "change_me"
+
+monitoring:
+  cortex-url: http://conduktor-monitoring:9009/
+  alert-manager-url: http://conduktor-monitoring:9010/
+  callback-url: http://conduktor-console:8080/monitoring/api/
+  notifications-callback-url: http://localhost:8080
+
+clusters:
+  - id: my-local-kafka-cluster
+    name: My Local Kafka Cluster
+    bootstrapServers: "kafka:19092"
+    schemaRegistry:
+      url: "http://schema-registry:8081"
