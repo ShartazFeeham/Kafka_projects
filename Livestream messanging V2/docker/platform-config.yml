@@ -15,8 +15,8 @@ monitoring:
   notifications-callback-url: http://localhost:8080
 
 clusters:
-  - id: my-local-kafka-cluster
-    name: My Local Kafka Cluster
+  - id: "Kafka-Projects-Livestream-messaging"
+    name: "Kafka Projects - Livestream messaging"
     bootstrapServers: "kafka:19092"
     schemaRegistry:
       url: "http://schema-registry:8081"

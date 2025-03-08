@@ -12,4 +12,21 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 local:
-  kafka-topic-name: "livestream-messaging"
+  kafka-topic-name: livestream-messaging
+  kafka-topic-partitions: 2
+  kafka-topic-replication-factor: 1
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      acks: all
+      retries: 3
+      retry.backoff.ms: 1000
+      key.serializer: org.apache.kafka.common.serialization.StringSerializer
+      value.serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group.id: my-group
+      key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    admin:
+      enabled: true
+
