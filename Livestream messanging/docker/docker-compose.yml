@@ -11,29 +11,29 @@ services:
       ZOOKEEPER_SERVERS: zookeeper:2888:3888
 
   kafka:
-    image: confluentinc/cp-kafka:7.8.0
-    hostname: kafka
-    container_name: kafka
+    image: confluentinc/cp-kafka:7.8.0 # Specifies the Docker image for Kafka
+    hostname: kafka # Sets the hostname for the Kafka container
+    container_name: kafka # Names the Kafka container
     ports:
-      - "9092:9092"
-      - "29092:29092"
-      - "9999:9999"
+      - "9092:9092" # Maps port 9092 on the host to port 9092 in the container for external access
+      - "29092:29092" # Maps port 29092 on the host to port 29092 in the container for Docker internal access
+      - "9999:9999" # Maps port 9999 on the host to port 9999 in the container for JMX monitoring
     environment:
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_BROKER_ID: 1
-      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_JMX_PORT: 9999
-      KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
-      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092 # Configures the advertised listeners for Kafka
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT # Maps listener names to security protocols
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL # Sets the listener used for inter-broker communication
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181" # Specifies the Zookeeper connection string
+      KAFKA_BROKER_ID: 1 # Sets the broker ID for Kafka
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO" # Configures logging levels for Kafka components
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Sets the replication factor for the offsets topic
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1 # Sets the replication factor for the transaction state log
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1 # Sets the minimum in-sync replicas for the transaction state log
+      KAFKA_JMX_PORT: 9999 # Sets the JMX port for Kafka
+      KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1} # Sets the JMX hostname for Kafka
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer # Specifies the authorizer class for Kafka
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true" # Allows access if no ACL is found
     depends_on:
-      - zookeeper
+      - zookeeper # Specifies that Kafka depends on the Zookeeper service
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.8.0
@@ -74,6 +74,9 @@ services:
         read_only: true
     environment:
       CDK_IN_CONF_FILE: /opt/conduktor/platform-config.yaml
+      ADMIN_EMAIL: admin@admin.com
+      ADMIN_PASSWORD: adminP4ss!
+      AUTH_LOCAL_USERS: user@user.com:userP4ss!
 
   conduktor-monitoring:
     hostname: conduktor-monitoring
