@@ -10,6 +10,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class KafkaProducerService {
@@ -18,6 +20,7 @@ public class KafkaProducerService {
     private final AdminClient adminClient;
     private final Logger log = LoggerFactory.getLogger(KafkaProducerService.class);
     private final String topicName;
+    private final Random random = new Random();
     private final int numPartitions;
     private final short replicationFactor;
 
@@ -34,14 +37,14 @@ public class KafkaProducerService {
 
     public void sendMessage(String message) {
         // createTopicIfNotExists(topicName, numPartitions, replicationFactor);
-        send(new ProducerRecord<>(topicName, message));
+        send(new ProducerRecord<>(topicName, UUID.randomUUID().toString().substring(0, 5), message));
     }
 
     // @WARNING: This approach seems to be an overkill for creating a topic.
     public void createTopicIfNotExists(String topicName, int numPartitions, short replicationFactor) {
         try {
             NewTopic newTopic = new NewTopic(topicName, numPartitions, replicationFactor);
-            adminClient.createTopics(Collections.singletonList(newTopic)).all().get();
+//            adminClient.createTopics(Collections.singletonList(newTopic)).all().get();
             log.info("Topic {} created successfully", topicName);
         } catch (Exception e) {
             if (e.getCause().getMessage().contains("already exists")) {

@@ -4,15 +4,9 @@ organization:
 database:
   host: "postgresql"
   port: 5432
-  name: "conduktor-console"
-  username: "conduktor"
-  password: "change_me"
-
-monitoring:
-  cortex-url: http://conduktor-monitoring:9009/
-  alert-manager-url: http://conduktor-monitoring:9010/
-  callback-url: http://conduktor-console:8080/monitoring/api/
-  notifications-callback-url: http://localhost:8080
+  name: "conductor_db"
+  username: "conductor"
+  password: "password"
 
 clusters:
   - id: "Kafka-Projects-Livestream-messaging"
