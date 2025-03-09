@@ -1,5 +1,7 @@
 package kafka.wikimedia.producer.events;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public interface KafkaEventProducer {
-    public void publishLogEvent(Object data);
+    void publishLogEvent(Object data);
 }

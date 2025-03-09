@@ -1,0 +1,31 @@
+server:
+  port: 8100
+
+spring:
+  application:
+    name: messaging.producer
+
+local:
+  kafka-topic-name: wikimedia-logs
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    producer:
+      key.serializer: org.apache.kafka.common.serialization.StringSerializer
+      value.serializer: org.apache.kafka.common.serialization.StringSerializer
+      # Safety configs (Kafka <= 2.8.0)
+      enable.idempotence: true
+      acks: all
+      retries: 3
+      retry.backoff.ms: 1000
+      # High throughput (better performance) config
+      linger.ms: 20 # After what period of time the producer will send the message
+      batch.size: 32768 # 32KB If the batch limit is met, send immediately
+      compression.type: snappy
+
+    consumer:
+      group.id: my-group
+      key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    admin:
+      enabled: true
+

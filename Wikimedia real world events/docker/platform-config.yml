@@ -1,0 +1,16 @@
+organization:
+  name: "Kafka Projects - Livestream messaging"
+
+database:
+  host: "postgresql"
+  port: 5432
+  name: "conductor_db"
+  username: "conductor"
+  password: "password"
+
+clusters:
+  - id: "Kafka-Projects-Livestream-messaging"
+    name: "Kafka Projects - Livestream messaging"
+    bootstrapServers: "kafka1:19092,kafka2:19092,kafka3:19092"
+    schemaRegistry:
+      url: "http://schema-registry:8081"
