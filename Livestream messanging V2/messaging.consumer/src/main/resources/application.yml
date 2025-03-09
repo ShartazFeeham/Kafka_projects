@@ -5,13 +5,12 @@ spring:
   application:
     name: messaging.consumer
 
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: group_01
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      auto-offset-reset: earliest
-
 local:
   kafka-topic-name: "livestream-messaging"
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    consumer:
+      group.id: my-group
+      key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto.offset.reset: earliest
