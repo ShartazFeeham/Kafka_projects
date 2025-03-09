@@ -6,7 +6,7 @@ spring:
     name: messaging.producer
 
   kafka:
-    bootstrap-servers: localhost:9092,localhost:9093
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
