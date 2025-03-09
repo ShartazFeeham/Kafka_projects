@@ -114,3 +114,31 @@ services:
       ADMIN_EMAIL: admin@admin.com
       ADMIN_PASSWORD: adminP4ss!
       AUTH_LOCAL_USERS: user@user.com:userP4ss!
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
+    container_name: elasticsearch_springboot
+    environment:
+      - bootstrap.memory_lock=true  # Enables memory locking for performance and stability.
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"  # Configures the JVM heap size for Elasticsearch.
+      - "discovery.type=single-node"  # Configures Elasticsearch to run in single-node mode.
+      - xpack.security.enabled=false  # Disables the security features of X-Pack for Elasticsearch.
+    ports:
+      - "9200:9200"
+    volumes: # Mounts a volume to persist Elasticsearch data.
+      - elasticsearch_data:/usr/share/elasticsearch/data  # Mounts the named volume for data persistence.
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.3.3
+    container_name: kibana_springboot
+    ports:
+      - "5601:5601"  # Maps port 5601 on the host to port 5601 on the container for accessing Kibana UI.
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200  # Configures Kibana to connect to Elasticsearch at the given URL.
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'  # Specifies the URL for Kibana to connect to Elasticsearch.
+    depends_on: # Ensures Kibana starts after Elasticsearch.
+      - elasticsearch
+
+volumes: # Defines named volumes for data persistence.
+  elasticsearch_data:
+    driver: local  # Specifies the local driver for volume storage.

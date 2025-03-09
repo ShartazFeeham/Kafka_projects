@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: messaging.producer
+    name: wikimedia.producer
 
 local:
   kafka-topic-name: livestream-messaging
