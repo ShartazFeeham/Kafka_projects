@@ -1,4 +1,4 @@
-package kafka.livestream.messaging.consumer;
+package kafka.livestream.messaging.consumer.config;
 
 import lombok.Getter;
 import lombok.Setter;
