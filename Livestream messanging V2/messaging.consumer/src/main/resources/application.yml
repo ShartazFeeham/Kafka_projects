@@ -9,6 +9,12 @@ local:
   kafka-topic-name: "livestream-messaging"
   kafka:
     bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    retry-attempts: 3
+    retry-interval: 1000
+    retry-backoff-multiplier: 2
+    retry-backoff-max-interval: 60000
+    dlq-prefix: ""
+    dlq-suffix: "-DLQ"
     consumer:
       group.id: my-group
       key.deserializer: org.apache.kafka.common.serialization.StringDeserializer

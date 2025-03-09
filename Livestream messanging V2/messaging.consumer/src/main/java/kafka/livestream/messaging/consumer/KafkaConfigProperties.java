@@ -33,4 +33,10 @@ public class KafkaConfigProperties {
         return consumer.getOrDefault("auto.offset.reset", "latest");
     }
 
+    private int retryAttempts;
+    private int retryInterval;
+    private int retryBackoffMultiplier;
+    private int retryBackoffMaxInterval;
+    private String dlqPrefix;
+    private String dlqSuffix;
 }

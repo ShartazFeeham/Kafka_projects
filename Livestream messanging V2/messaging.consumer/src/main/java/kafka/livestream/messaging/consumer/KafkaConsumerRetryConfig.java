@@ -1,6 +1,7 @@
 package kafka.livestream.messaging.consumer;
 
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,11 @@ import org.springframework.util.backoff.FixedBackOff;
 public class KafkaConsumerRetryConfig {
 
     private final Logger log = LoggerFactory.getLogger(KafkaConsumerRetryConfig.class);
-    private static final long RETRY_INTERVAL = 1000L;  // 1 second
-    private static final int MAX_ATTEMPTS = 3;
+    private final KafkaConfigProperties prop;
+
+    public KafkaConsumerRetryConfig(KafkaConfigProperties kafkaProperties) {
+        this.prop = kafkaProperties;
+    }
 
     @Bean
     public CommonErrorHandler errorHandler(KafkaTemplate<Object, Object> template) {
@@ -26,13 +30,17 @@ public class KafkaConsumerRetryConfig {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(template,
             (record, exception) -> {
                 log.error("Failed to process message: {}", record, exception);
-                return new TopicPartition(record.topic() + "dead-latter-Q (" + record.topic() + ")", record.partition());
+                return new TopicPartition(generateTopicName(record), record.partition());
             });
 
         // Configure back-off policy
-        ExponentialBackOff backOff = new ExponentialBackOff(RETRY_INTERVAL, 2);
-        backOff.setMaxInterval(RETRY_INTERVAL * 60);
+        ExponentialBackOff backOff = new ExponentialBackOff(prop.getRetryInterval(), prop.getRetryBackoffMultiplier());
+        backOff.setMaxInterval(prop.getRetryBackoffMaxInterval());
 
-        return new DefaultErrorHandler(recoverer, new FixedBackOff(RETRY_INTERVAL, MAX_ATTEMPTS));
+        return new DefaultErrorHandler(recoverer, new FixedBackOff(prop.getRetryInterval(), prop.getRetryAttempts()));
+    }
+
+    private String generateTopicName(ConsumerRecord<?, ?> record) {
+        return prop.getDlqPrefix() + record.topic() + prop.getDlqSuffix();
     }
 }
