@@ -5,6 +5,12 @@ spring:
   application:
     name: messaging.producer
 
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    streams:
+      properties:
+        processing.guarantee: exactly_once_v2
+
 local:
   kafka-topic-name: wikimedia-logs
   kafka:
