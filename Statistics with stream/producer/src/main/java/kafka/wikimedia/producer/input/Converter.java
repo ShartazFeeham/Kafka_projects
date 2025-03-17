@@ -15,21 +15,18 @@ public class Converter {
     }
 
     public MessageEventWrapper convertToEventObject(String input) {
-        try {
-            MessageEventWrapper event = objectMapper.readValue(input, MessageEventWrapper.class);
-            log.info("Converted to Object: {}", event);
-            return event;
-        } catch (Exception e) {
-            log.error("Error in converting to Object");
-            return null;
-        }
+        return convert(input, MessageEventWrapper.class);
     }
 
     public MessageMapWrapper convertToMapObject(String input) {
+        return convert(input, MessageMapWrapper.class);
+    }
+
+    private  <T> T convert(String input, Class<T> clazz) {
         try {
-            MessageMapWrapper map = objectMapper.readValue(input, MessageMapWrapper.class);
-            log.info("Converted to Object: {}", map);
-            return map;
+            T converted = objectMapper.readValue(input, clazz);
+            log.info("Converted to Object: {}", converted);
+            return converted;
         } catch (Exception e) {
             log.error("Error in converting to Object");
             return null;
